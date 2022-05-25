@@ -21,8 +21,8 @@ function currentProductImage (imageUrl, altText){
     imgProduct.src = imageUrl
     imgProduct.alt = altText 
     const imgParent = document.querySelector(".item__img")
-    if (imgParent != null) imgParent.appendChild(imgProduct)  // Marche aussi si il est undefined  
-        
+    imgParent.appendChild(imgProduct)
+         
 }
 
 function currentProductName (name) {
@@ -45,14 +45,14 @@ function currentProductDescription(description) {
 
 function currentProductColor(colors){
     const selectColor = document.getElementById("colors")
-    if (selectColor != null ){
+    
         colors.forEach((color) => {
             const option = document.createElement("option")
             option.value = color
             option.textContent = color
             selectColor.appendChild(option)
         } )
-    }
+    
 }
 
 
