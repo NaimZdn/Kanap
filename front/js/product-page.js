@@ -64,7 +64,7 @@ function currentProductColor(colors){
 // Gestion du LocalStorage 
 
 
-
+// Création d'une fonction qui va nous permettre de gérer l'intégralité du localStorage
 function addToCartProduct (){
     const buttonAdd = document.getElementById ("addToCart")
         .addEventListener ("click", () => {
@@ -75,6 +75,7 @@ function addToCartProduct (){
             if (orderValidIf(colorProduct, quantityProduct)) 
             return 
         
+            // Création d'un objet avec les infos que l'on souhaite intégrer dans le localStorage 
             const productInfo = Object.assign({}, {
                 color: `${colorProduct}`, 
                 quantity : `${quantityProduct}`,
@@ -108,6 +109,7 @@ function addToCartProduct (){
         }});
     }
 
+// Création d'une fonction qui nous permet de contrôler les différents comportement de l'utilisateur 
 function orderValidIf(colorProduct, quantityProduct) {
     if (colorProduct == null || colorProduct === "" || quantityProduct == null || quantityProduct == 0 ) {
         alert("Veuillez choisir une couleur et/ou une quantité")
