@@ -33,28 +33,28 @@ fetch (`http://localhost:3000/api/products/${product.id}`)
   let productDelete = document.createElement ('p')
   
     function allData(data){
-    createArticle()
-    createImgContainer()
-    productInCartImg()
-    createInfoContainer()
-    createDescriptionContainer ()
-    productCartName ()
-    productInCartColor ()
-    productInCartPrice ()
-    createSettingsContainer ()
-    createQuantityContainer ()
-    productSettingsQuantity ()
-    productSettingsInput ()
-    createDeleteContainer ()
-    productSettingsDelete ()
-    changeQuantityPrice ()
-    changeCartPrice ()
+      createArticle()
+      createImgContainer()
+      productInCartImg()
+      createInfoContainer()
+      createDescriptionContainer ()
+      productCartName ()
+      productInCartColor ()
+      productInCartPrice ()
+      createSettingsContainer ()
+      createQuantityContainer ()
+      productSettingsQuantity ()
+      productSettingsInput ()
+      createDeleteContainer ()
+      productSettingsDelete ()
+      changeQuantityPrice ()
+      changeCartPrice ()
       
         function createArticle (){
-        productArticle.classList.add("cart__item")
-        productArticle.dataset.id = productCartId
-        productArticle.dataset.color = productCartColor
-        cartList.appendChild(productArticle)
+          productArticle.classList.add("cart__item")
+          productArticle.dataset.id = productCartId
+          productArticle.dataset.color = productCartColor
+          cartList.appendChild(productArticle)
         }
 
         function createImgContainer () {
@@ -151,8 +151,7 @@ fetch (`http://localhost:3000/api/products/${product.id}`)
           productDelete.classList.add('deleteItem')
           productDelete.textContent = 'Supprimer'
           deleteContainer.appendChild(productDelete)
-          productDelete.addEventListener("click", () => deleteProductInCart(), removeForm() )
-          
+          productDelete.addEventListener("click", () => deleteProductInCart(), removeForm() )       
         }
 
         function deleteProductInCart () {
@@ -163,13 +162,12 @@ fetch (`http://localhost:3000/api/products/${product.id}`)
           deleteArticle ()
           deleteProductInStorage ()
           removeForm () 
-
         }
 
         function removeForm () {
           if (productInCart === 0 || null )  {
-            form.remove() 
-        }
+              form.remove() 
+          }
       }
         function deleteArticle() {
           const articleToDelete = document.querySelector (`article[data-id="${product.id}"][data-color="${product.color}"]`)
