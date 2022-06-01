@@ -67,20 +67,20 @@ function currentProductColor(colors){
 
 function addToCartProduct (){
     const buttonAdd = document.getElementById ("addToCart")
-    .addEventListener ("click", () => {
-        let productBoard = JSON.parse(localStorage.getItem("productInCart"));
-        const colorProduct = document.getElementById ('colors').value 
-        const quantityProduct = document.getElementById ('quantity').value 
-  
-        if (orderValidIf(colorProduct, quantityProduct)) 
-        return 
-      
-        const productInfo = Object.assign({}, {
-            color: `${colorProduct}`, 
-            quantity : `${quantityProduct}`,
-            id : `${productId}`,
-         
-        })
+        .addEventListener ("click", () => {
+            let productBoard = JSON.parse(localStorage.getItem("productInCart"));
+            const colorProduct = document.getElementById ('colors').value 
+            const quantityProduct = document.getElementById ('quantity').value 
+    
+            if (orderValidIf(colorProduct, quantityProduct)) 
+            return 
+        
+            const productInfo = Object.assign({}, {
+                color: `${colorProduct}`, 
+                quantity : `${quantityProduct}`,
+                id : `${productId}`,
+            
+            })
 
         if (productBoard == null ) {
             productBoard = []; 
@@ -88,30 +88,22 @@ function addToCartProduct (){
             localStorage.setItem('productInCart', JSON.stringify(productBoard));
     
         } else if (productBoard != null) {
-      
-           
-
-          
             for (i = 0; i < productBoard.length; i++) {
-        
                 if (productBoard[i].id == productId && productBoard[i].color == colorProduct ){
                         let quantityValue = parseInt(productBoard[i].quantity) + parseInt(quantityProduct)
                                       
-                    return(            
-                        productBoard[i].quantity = quantityValue, 
-                        localStorage.setItem("productInCart",JSON.stringify(productBoard)), 
-                        (productBoard = JSON.parse(localStorage.getItem("productBoard")))
-            )}         
-         }
-
-       
+                return (productBoard[i].quantity = quantityValue, 
+                    localStorage.setItem("productInCart",JSON.stringify(productBoard)), 
+                    (productBoard = JSON.parse(localStorage.getItem("productBoard"))))
+                }         
+            }
             for (i = 0; i < productBoard.length; i++) {
                 if ((productBoard[i].id == productId && productBoard[i].color != colorProduct) || productBoard[i].id != productId);
-            } return (
+             return (
                     productBoard.push(productInfo),
                     localStorage.setItem("productInCart", JSON.stringify(productBoard)),
                     (productBoard = JSON.parse(localStorage.getItem("productBoard")))
-            );
+            )};
         
     }});
     return (productBoard = JSON.parse(localStorage.getItem("productInCart")));   
