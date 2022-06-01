@@ -49,9 +49,7 @@ fetch (`http://localhost:3000/api/products/${product.id}`)
     productSettingsDelete ()
     changeQuantityPrice ()
     changeCartPrice ()
-    
-    
-    
+      
         function createArticle (){
         productArticle.classList.add("cart__item")
         productArticle.dataset.id = productCartId
