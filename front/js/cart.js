@@ -1,22 +1,25 @@
+// Création de la variable nous permettant de récupérer le localStorage 
 let productInCart = JSON.parse(localStorage.getItem("productInCart"))
 const cartList = document.getElementById("cart__items")
 
+
 function productOrder() {
+
+  // Si le localStorage est vide alors on prévient l'utilisateur + on efface le formulaire 
   if (productInCart === null) {
     let header = document.querySelector('h1')
     let cartPriceP = document.querySelector('.cart__price p')
     let cartOrder = document.querySelector('.cart__order')
-
-    header.textContent = 'Votre panier est vide';
-    cartPriceP.textContent = "Consultez nos articles sur la page d'acceuil"
-    cartPriceP.style.textAlign = 'center';
-    cartOrder.style.display = 'none'
-
-
+      header.textContent = 'Votre panier est vide';
+      cartPriceP.textContent = "Consultez nos articles sur la page d'acceuil"
+      cartPriceP.style.textAlign = 'center';
+      cartOrder.style.display = 'none'
+    
+  // Sinon on peut traiter l'ensemble de nos donner afin de créer les éléments du DOM 
   } else {
-
     productInCart.forEach((product) => {
 
+      // On récupére les autres informations sur chaque produits qui étaient dans le localStorage afin d'implémenter les éléments du DOM 
       fetch(`http://localhost:3000/api/products/${product.id}`)
         .then(res => res.json())
         .then(data => allData(data))
@@ -39,6 +42,7 @@ function productOrder() {
       let deleteContainer = document.createElement('div')
       let productDelete = document.createElement('p')
 
+      // Création d'une fonction avec le paramètre data (= informations des produits récupérés via l'API) + création de tous les éléments du DOM 
       function allData(data) {
         createArticle()
         createImgContainer()
@@ -117,18 +121,21 @@ function productOrder() {
           quantityContainer.appendChild(productQuantity)
         }
 
+        // Fonction qui change la quantité total des articles dans le panier
         function changeQuantityProduct() {
           const changeQuantity = document.getElementById('totalQuantity')
           const total = productInCart.reduce((total, products) => total + Number(products.quantity), 0)
           changeQuantity.textContent = total
         }
 
+        // Fonction qui change le prix total des articles dans le panier
         function changeCartPrice() {
           const changePrice = document.getElementById('totalPrice')
           const total = productInCart.reduce((total, products) => total + Number(products.quantity) * data.price, 0)
           changePrice.textContent = total
         }
 
+        // Fonction qui permet d'écouter le changement de quantité d'un produit par l'utilisateur
         function productSettingsInput() {
           productInput.classList.add('itemQuantity')
           productInput.type = 'number'
@@ -140,6 +147,7 @@ function productOrder() {
           productInput.addEventListener("change", () => updatePrice(productInput.value))
         }
 
+        // Mets à jour le prix en fonction du comportement que l'utilisateur peut avoir avec le bouton input + ajoute cette nouvelle quantité au localStorage
         function updatePrice(newProductValue) {
           const productUpdate = productInCart
           productUpdate.quantity = Number(newProductValue)
@@ -154,6 +162,7 @@ function productOrder() {
           settingsContainer.appendChild(deleteContainer)
         }
 
+        // Fonction qui permet d'écouter le click sur le bouton supprimer 
         function productSettingsDelete() {
           productDelete.classList.add('deleteItem')
           productDelete.textContent = 'Supprimer'
@@ -161,6 +170,7 @@ function productOrder() {
           productDelete.addEventListener("click", () => deleteProductInCart())
         }
 
+        // Fonction qui permet de supprimer du localStorage le produit sur lequel l'utilisateur a cliqué 
         function deleteProductInCart() {
           const productToDelete = productInCart.findIndex((product) => product.id === data._id && product.color === data.color)
           productInCart.splice(productToDelete, 1)
@@ -171,12 +181,14 @@ function productOrder() {
           deleteProductInStorage()
         }
 
+        // Supprime le produit de la page
         function deleteArticle() {
           const articleToDelete = document.querySelector(`article[data-id="${product.id}"][data-color="${product.color}"]`)
           console.log(articleToDelete)
           articleToDelete.remove()
         }
 
+        // Suurpime le produit du localStorage et ajoute une alerte pour l'utilisateur + si le panier est vide masque le formulaire et avertit l'utilisateur 
         function deleteProductInStorage() {
           let newStorage = productInCart
           alert('Le produit a bien été supprimé')
@@ -186,11 +198,10 @@ function productOrder() {
             let header = document.querySelector('h1')
             let cartPriceP = document.querySelector('.cart__price p')
             let cartOrder = document.querySelector('.cart__order')
-
-            header.textContent = 'Votre panier est vide';
-            cartPriceP.textContent = "Consultez nos articles sur la page d'acceuil"
-            cartPriceP.style.textAlign = 'center';
-            cartOrder.style.display = 'none'
+              header.textContent = 'Votre panier est vide';
+              cartPriceP.textContent = "Consultez nos articles sur la page d'acceuil"
+              cartPriceP.style.textAlign = 'center';
+              cartOrder.style.display = 'none'
           }
         }
       }
@@ -199,13 +210,16 @@ function productOrder() {
 }
 productOrder();
 
-// Formulaire a remplir 
+// Gestion du formulaire et de la requête POST 
 
 const submit = document.getElementById('order')
+
+// On écoute le click du bouton envoyer et on lui attribue une callback
 submit.addEventListener('click', (stopRefresh) => submitForm(stopRefresh))
 
 function submitForm(stopRefresh) {
   stopRefresh.preventDefault()
+
 
   formValid()
   isFormInvalid()
@@ -218,8 +232,8 @@ function submitForm(stopRefresh) {
   
   function formValid() {
 
+    // Si les formulaires sont invalide alors on envoie pas le formulaire à l'API
     if (isFormInvalid() || isFirstNameInvalid() || isLastNameInvalid() || isAdressInvalid() || isCityInvalid() || isAdressInvalid() || isEmailInvalid() === true) return
-
     const formCart = makeRequest()
     fetch("http://localhost:3000/api/products/order", {
       method: "POST",
@@ -235,8 +249,6 @@ function submitForm(stopRefresh) {
       })
       .catch(err => console.log("An error has occurred", err))
   }
-
-  
 
   function isFormInvalid() {
     const form = document.querySelector(".cart__order__form")
@@ -259,7 +271,6 @@ function submitForm(stopRefresh) {
       firstNameError.style.color = 'lightgreen'
       return false
     } else if (regex.test(firstName) === false) {
-      alert("Veuillez entrer un prénom valide ")
       firstNameError.textContent = 'Les caractères saisis ne sont pas valides'
       firstNameError.style.removeProperty('color')
       firstNameError.style.color = 'lightred'
@@ -277,7 +288,6 @@ function submitForm(stopRefresh) {
       lastNameError.style.color = 'lightgreen'
       return false
     } else if (regex.test(lastName) === false) {
-      alert("Veuillez entrer un nom valide ")
       lastNameError.textContent = 'Les caractères saisis ne sont pas valides'
       lastNameError.style.removeProperty('color')
       lastNameError.style.color = 'lightred'
@@ -294,8 +304,7 @@ function submitForm(stopRefresh) {
       addressError.textContent = 'Le champ est valide'
       addressError.style.color = 'lightgreen'
       return false
-    } else if (regex.test(address) === false) {
-      alert("Veuillez entrer une addresse valide ")
+    } else if (regex.test(address) === false) { 
       addressError.textContent = 'Les caractères saisis ne sont pas valides'
       addressError.style.removeProperty('color')
       addressError.style.color = 'lightred'
@@ -313,7 +322,6 @@ function submitForm(stopRefresh) {
       cityError.style.color = 'lightgreen'
       return false
     } else if (regex.test(city) === false) {
-      alert("Veuillez une ville valide ")
       cityError.textContent = 'Les caractères saisis ne sont pas valides'
       cityError.style.removeProperty('color')
       cityError.style.color = 'lightred'
@@ -331,7 +339,6 @@ function submitForm(stopRefresh) {
       emailError.style.color = 'lightgreen'
       return false
     } else if (regex.test(email) === false) {
-      alert("Veuillez entrer une adresse mail valide ")
       emailError.textContent = 'Les caractères saisis ne sont pas valides'
       emailError.style.removeProperty('color')
       emailError.style.color = 'lightred'
@@ -341,7 +348,6 @@ function submitForm(stopRefresh) {
   }
 }
 function formInformation() {
-
   const form = document.querySelector('.cart__order__form')
   form.firstName.setAttribute("pattern", "[a-z A-Z-']{2,50}")
   form.firstName.setAttribute("placeholder", "Exemple : Naïm");
@@ -354,6 +360,7 @@ function formInformation() {
   form.email.setAttribute("placeholder", "Exemple : kanap@gmail.com ");
 }
 
+// Création des données que l'on souhaite envoyer à l'API 
 function makeRequest() {
   const form = document.querySelector('.cart__order__form')
   const formCart = {
@@ -369,6 +376,7 @@ function makeRequest() {
   return formCart
 }
 
+// On récupére les ID des différents produits du localStorage afin de les envoyer à l'API 
 function pushIdForPost() {
   let products = []
   for (let product of productInCart) {
