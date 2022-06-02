@@ -3,8 +3,15 @@ const cartList = document.getElementById("cart__items")
 
 function productOrder () {
   if (productInCart === null) {
-    const form = document.querySelector ('.cart__order__form')
-    form.remove()
+    let header = document.querySelector('h1')
+    let cartPriceP = document.querySelector ('.cart__price p')
+    let cartOrder = document.querySelector ('.cart__order')
+
+    header.textContent = 'Votre panier est vide'; 
+    cartPriceP.textContent = "Consultez nos articles sur la page d'acceuil"
+    cartPriceP.style.textAlign = 'center'; 
+    cartOrder.style.display = 'none'
+
     
   }else {
 
@@ -47,7 +54,7 @@ fetch (`http://localhost:3000/api/products/${product.id}`)
       productSettingsInput ()
       createDeleteContainer ()
       productSettingsDelete ()
-      changeQuantityPrice ()
+      changeQuantityProduct ()
       changeCartPrice ()
       
         function createArticle (){
@@ -110,7 +117,7 @@ fetch (`http://localhost:3000/api/products/${product.id}`)
           quantityContainer.appendChild(productQuantity)
         }
 
-        function changeQuantityPrice () {
+        function changeQuantityProduct () {
           const changeQuantity = document.getElementById ('totalQuantity')
           const total = productInCart.reduce((total, products ) =>  total + Number(products.quantity), 0 )
           changeQuantity.textContent = total 
@@ -134,13 +141,16 @@ fetch (`http://localhost:3000/api/products/${product.id}`)
         }
 
         function updatePrice (newProductValue) {
-          const productUpdate = productInCart.find((product) => product.id === data._id )
+          const productUpdate = productInCart
           productUpdate.quantity = Number(newProductValue)
-          console.log(productInCart)
-          changeQuantityPrice ()
+          product.quantity = productUpdate.quantity     
+          changeQuantityProduct ()
           changeCartPrice () 
           localStorage.setItem('productInCart', JSON.stringify(productInCart))
         }
+
+
+        
 
         function createDeleteContainer () {   
           deleteContainer.classList.add('cart__item__content__settings__delete')
@@ -151,33 +161,48 @@ fetch (`http://localhost:3000/api/products/${product.id}`)
           productDelete.classList.add('deleteItem')
           productDelete.textContent = 'Supprimer'
           deleteContainer.appendChild(productDelete)
-          productDelete.addEventListener("click", () => deleteProductInCart(), removeForm() )       
+          productDelete.addEventListener("click", () => deleteProductInCart())       
         }
 
         function deleteProductInCart () {
           const productToDelete = productInCart.findIndex((product) => product.id === data._id && product.color === data.color)
           productInCart.splice(productToDelete, 1)
-          changeQuantityPrice ()
+          console.log(productInCart)
+          changeQuantityProduct ()
           changeCartPrice () 
           deleteArticle ()
           deleteProductInStorage ()
-          removeForm () 
+        
         }
 
-        function removeForm () {
-          if (productInCart === 0 || null )  {
-              form.remove() 
-          }
-      }
+       
+      
         function deleteArticle() {
           const articleToDelete = document.querySelector (`article[data-id="${product.id}"][data-color="${product.color}"]`)
           console.log(articleToDelete)
           articleToDelete.remove()
         }
 
+        
         function deleteProductInStorage () {
-          const newStorage = `${product.id}-${product.color}`
-          localStorage.removeItem('productInCart', newStorage)
+          let newStorage = productInCart
+          alert ('Le produit a bien été supprimé')
+          localStorage.setItem('productInCart', JSON.stringify(newStorage))
+          if (productInCart.length === 0)
+            localStorage.removeItem('productInCart')
+            let header = document.querySelector('h1')
+            let cartPriceP = document.querySelector ('.cart__price p')
+            let cartOrder = document.querySelector ('.cart__order')
+
+            header.textContent = 'Votre panier est vide'; 
+            cartPriceP.textContent = "Consultez nos articles sur la page d'acceuil"
+            cartPriceP.style.textAlign = 'center'; 
+            cartOrder.style.display = 'none'
+
+            
+
+       
+            
         }  
     }
 })
