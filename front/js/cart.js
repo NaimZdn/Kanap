@@ -1,75 +1,75 @@
 let productInCart = JSON.parse(localStorage.getItem("productInCart"))
 const cartList = document.getElementById("cart__items")
 
-function productOrder () {
+function productOrder() {
   if (productInCart === null) {
     let header = document.querySelector('h1')
-    let cartPriceP = document.querySelector ('.cart__price p')
-    let cartOrder = document.querySelector ('.cart__order')
+    let cartPriceP = document.querySelector('.cart__price p')
+    let cartOrder = document.querySelector('.cart__order')
 
-    header.textContent = 'Votre panier est vide'; 
+    header.textContent = 'Votre panier est vide';
     cartPriceP.textContent = "Consultez nos articles sur la page d'acceuil"
-    cartPriceP.style.textAlign = 'center'; 
+    cartPriceP.style.textAlign = 'center';
     cartOrder.style.display = 'none'
 
-    
-  }else {
+
+  } else {
 
     productInCart.forEach((product) => {
 
-      fetch (`http://localhost:3000/api/products/${product.id}`)
-            .then (res => res.json())
-            .then (data => allData(data))
-            .catch (err => console.log("An error has occurred", err))
+      fetch(`http://localhost:3000/api/products/${product.id}`)
+        .then(res => res.json())
+        .then(data => allData(data))
+        .catch(err => console.log("An error has occurred", err))
 
-      let productCartId = product.id 
-      let productCartColor = product.color 
-      let productCartQuantity = product.quantity; 
+      let productCartId = product.id
+      let productCartColor = product.color
+      let productCartQuantity = product.quantity;
       let productArticle = document.createElement("article")
-      let imgContainer = document.createElement ('div')
-      let infoContainer = document.createElement ('div')
-      let descriptionContainer = document.createElement ('div')
-      let productName = document.createElement ('h2')
-      let productColor = document.createElement ('p')
+      let imgContainer = document.createElement('div')
+      let infoContainer = document.createElement('div')
+      let descriptionContainer = document.createElement('div')
+      let productName = document.createElement('h2')
+      let productColor = document.createElement('p')
       let productCart = document.createElement('p')
-      let settingsContainer = document.createElement ('div')
-      let quantityContainer = document.createElement ('div')
-      let productQuantity = document.createElement ('p')
-      let productInput = document.createElement ('input')
-      let deleteContainer = document.createElement ('div')
-      let productDelete = document.createElement ('p')
-        
+      let settingsContainer = document.createElement('div')
+      let quantityContainer = document.createElement('div')
+      let productQuantity = document.createElement('p')
+      let productInput = document.createElement('input')
+      let deleteContainer = document.createElement('div')
+      let productDelete = document.createElement('p')
+
       function allData(data) {
         createArticle()
         createImgContainer()
         productInCartImg()
         createInfoContainer()
-        createDescriptionContainer ()
-        productCartName ()
-        productInCartColor ()
-        productInCartPrice ()
-        createSettingsContainer ()
-        createQuantityContainer ()
-        productSettingsQuantity ()
-        productSettingsInput ()
-        createDeleteContainer ()
-        productSettingsDelete ()
-        changeQuantityProduct ()
-        changeCartPrice ()
-          
-        function createArticle (){
+        createDescriptionContainer()
+        productCartName()
+        productInCartColor()
+        productInCartPrice()
+        createSettingsContainer()
+        createQuantityContainer()
+        productSettingsQuantity()
+        productSettingsInput()
+        createDeleteContainer()
+        productSettingsDelete()
+        changeQuantityProduct()
+        changeCartPrice()
+
+        function createArticle() {
           productArticle.classList.add("cart__item")
           productArticle.dataset.id = productCartId
           productArticle.dataset.color = productCartColor
           cartList.appendChild(productArticle)
         }
 
-        function createImgContainer () {
+        function createImgContainer() {
           imgContainer.classList.add('cart__item__img')
           productArticle.appendChild(imgContainer)
         }
 
-        function productInCartImg () {
+        function productInCartImg() {
           let productImg = document.createElement('img')
           productImg.src = data.imageUrl
           productImg.alt = data.altTxt
@@ -77,59 +77,59 @@ function productOrder () {
           return productImg
         }
 
-        function createInfoContainer () {
+        function createInfoContainer() {
           infoContainer.classList.add('cart__item__content')
           productArticle.appendChild(infoContainer)
         }
 
-        function createDescriptionContainer () {
+        function createDescriptionContainer() {
           descriptionContainer.classList.add('cart__item__content__description')
           infoContainer.appendChild(descriptionContainer)
         }
 
-        function productCartName () {
+        function productCartName() {
           productName.textContent = data.name
           descriptionContainer.appendChild(productName)
         }
 
-        function productInCartColor () {
+        function productInCartColor() {
           productColor.textContent = productCartColor
           descriptionContainer.appendChild(productColor)
         }
-    
-        function productInCartPrice () {
+
+        function productInCartPrice() {
           productCart.textContent = data.price + ' €'
           descriptionContainer.appendChild(productCart)
         }
 
-        function createSettingsContainer () {
-          settingsContainer.classList.add ('cart__item__content__settings')
+        function createSettingsContainer() {
+          settingsContainer.classList.add('cart__item__content__settings')
           infoContainer.appendChild(settingsContainer)
         }
-      
-        function createQuantityContainer () {
+
+        function createQuantityContainer() {
           quantityContainer.classList.add('cart__item__content__settings__quantity')
           settingsContainer.appendChild(quantityContainer)
         }
-        
-        function productSettingsQuantity () {
+
+        function productSettingsQuantity() {
           productQuantity.textContent = ('Qté : ')
           quantityContainer.appendChild(productQuantity)
         }
 
-        function changeQuantityProduct () {
-          const changeQuantity = document.getElementById ('totalQuantity')
-          const total = productInCart.reduce((total, products ) =>  total + Number(products.quantity), 0 )
-          changeQuantity.textContent = total 
+        function changeQuantityProduct() {
+          const changeQuantity = document.getElementById('totalQuantity')
+          const total = productInCart.reduce((total, products) => total + Number(products.quantity), 0)
+          changeQuantity.textContent = total
         }
 
-        function changeCartPrice () {
-          const changePrice = document.getElementById ('totalPrice')
-          const total = productInCart.reduce((total, products) => total + Number(products.quantity) * data.price, 0)    
-          changePrice.textContent = total    
+        function changeCartPrice() {
+          const changePrice = document.getElementById('totalPrice')
+          const total = productInCart.reduce((total, products) => total + Number(products.quantity) * data.price, 0)
+          changePrice.textContent = total
         }
 
-        function productSettingsInput () {
+        function productSettingsInput() {
           productInput.classList.add('itemQuantity')
           productInput.type = 'number'
           productInput.name = 'itemQuantity'
@@ -140,58 +140,58 @@ function productOrder () {
           productInput.addEventListener("change", () => updatePrice(productInput.value))
         }
 
-        function updatePrice (newProductValue) {
+        function updatePrice(newProductValue) {
           const productUpdate = productInCart
           productUpdate.quantity = Number(newProductValue)
-          product.quantity = productUpdate.quantity     
-          changeQuantityProduct ()
-          changeCartPrice () 
+          product.quantity = productUpdate.quantity
+          changeQuantityProduct()
+          changeCartPrice()
           localStorage.setItem('productInCart', JSON.stringify(productInCart))
         }
 
-        function createDeleteContainer () {   
+        function createDeleteContainer() {
           deleteContainer.classList.add('cart__item__content__settings__delete')
           settingsContainer.appendChild(deleteContainer)
         }
 
-        function productSettingsDelete () {
+        function productSettingsDelete() {
           productDelete.classList.add('deleteItem')
           productDelete.textContent = 'Supprimer'
           deleteContainer.appendChild(productDelete)
-          productDelete.addEventListener("click", () => deleteProductInCart())       
+          productDelete.addEventListener("click", () => deleteProductInCart())
         }
 
-        function deleteProductInCart () {
+        function deleteProductInCart() {
           const productToDelete = productInCart.findIndex((product) => product.id === data._id && product.color === data.color)
           productInCart.splice(productToDelete, 1)
           console.log(productInCart)
-          changeQuantityProduct ()
-          changeCartPrice () 
-          deleteArticle ()
-          deleteProductInStorage ()
+          changeQuantityProduct()
+          changeCartPrice()
+          deleteArticle()
+          deleteProductInStorage()
         }
-      
+
         function deleteArticle() {
-          const articleToDelete = document.querySelector (`article[data-id="${product.id}"][data-color="${product.color}"]`)
+          const articleToDelete = document.querySelector(`article[data-id="${product.id}"][data-color="${product.color}"]`)
           console.log(articleToDelete)
           articleToDelete.remove()
         }
 
-        function deleteProductInStorage () {
+        function deleteProductInStorage() {
           let newStorage = productInCart
-          alert ('Le produit a bien été supprimé')
+          alert('Le produit a bien été supprimé')
           localStorage.setItem('productInCart', JSON.stringify(newStorage))
           if (productInCart.length === 0) {
             localStorage.removeItem('productInCart')
             let header = document.querySelector('h1')
-            let cartPriceP = document.querySelector ('.cart__price p')
-            let cartOrder = document.querySelector ('.cart__order')
+            let cartPriceP = document.querySelector('.cart__price p')
+            let cartOrder = document.querySelector('.cart__order')
 
-            header.textContent = 'Votre panier est vide'; 
+            header.textContent = 'Votre panier est vide';
             cartPriceP.textContent = "Consultez nos articles sur la page d'acceuil"
-            cartPriceP.style.textAlign = 'center'; 
-            cartOrder.style.display = 'none'   
-          } 
+            cartPriceP.style.textAlign = 'center';
+            cartOrder.style.display = 'none'
+          }
         }
       }
     })
@@ -201,41 +201,42 @@ productOrder();
 
 // Formulaire a remplir 
 
-const submit = document.getElementById ('order')
+const submit = document.getElementById('order')
 submit.addEventListener('click', (stopRefresh) => submitForm(stopRefresh))
 
-function submitForm (stopRefresh) {
+function submitForm(stopRefresh) {
   stopRefresh.preventDefault()
-  
-function formValid () {
 
-  if( isFormInvalid () ||  isFirstNameInvalid() || isLastNameInvalid() || isAdressInvalid() ||
-  isCityInvalid() || isAdressInvalid() || isEmailInvalid() === true) return 
-
-  const formCart = makeRequest()
-  fetch ("http://localhost:3000/api/products/order", {
-    method : "POST", 
-    body: JSON.stringify(formCart), 
-    headers: {
-      "Content-Type": "application/json",
-    }
-  })
-  .then (res => res.json())
-  .then((data) => {
-    const orderId = data.orderId
-    window.location.href = "./confirmation.html" + "?orderId=" + orderId
-  })
-  .catch (err => console.log("An error has occurred", err))
-}
-  console.log('cc ')
-  
-  isFormInvalid ()
+  formValid()
+  isFormInvalid()
   isFirstNameInvalid()
   isLastNameInvalid()
   isAdressInvalid()
   isCityInvalid()
   isAdressInvalid()
   isEmailInvalid()
+  
+  function formValid() {
+
+    if (isFormInvalid() || isFirstNameInvalid() || isLastNameInvalid() || isAdressInvalid() || isCityInvalid() || isAdressInvalid() || isEmailInvalid() === true) return
+
+    const formCart = makeRequest()
+    fetch("http://localhost:3000/api/products/order", {
+      method: "POST",
+      body: JSON.stringify(formCart),
+      headers: {
+        "Content-Type": "application/json",
+      }
+    })
+      .then(res => res.json())
+      .then((data) => {
+        const orderId = data.orderId
+        window.location.href = "./confirmation.html" + "?orderId=" + orderId
+      })
+      .catch(err => console.log("An error has occurred", err))
+  }
+
+  
 
   function isFormInvalid() {
     const form = document.querySelector(".cart__order__form")
@@ -248,17 +249,16 @@ function formValid () {
       return false
     })
   }
-  
+
   function isFirstNameInvalid() {
     const firstName = document.getElementById("firstName").value
-    const firstNameError = document.getElementById ('firstNameErrorMsg')
+    const firstNameError = document.getElementById('firstNameErrorMsg')
     const regex = /^[a-zéèôöîïûùü' -]{2,50}$/gi;
     if (regex.test(firstName) === true) {
       firstNameError.textContent = 'Le champ est valide'
       firstNameError.style.color = 'lightgreen'
       return false
-    } else
-    if (regex.test(firstName) === false) {
+    } else if (regex.test(firstName) === false) {
       alert("Veuillez entrer un prénom valide ")
       firstNameError.textContent = 'Les caractères saisis ne sont pas valides'
       firstNameError.style.removeProperty('color')
@@ -267,17 +267,16 @@ function formValid () {
     }
     return false
   }
-  
+
   function isLastNameInvalid() {
     const lastName = document.getElementById("lastName").value
-    const lastNameError = document.getElementById ('lastNameErrorMsg')
+    const lastNameError = document.getElementById('lastNameErrorMsg')
     const regex = /^[a-zéèôöîïûùü' -]{2,50}$/gi;
     if (regex.test(lastName) === true) {
       lastNameError.textContent = 'Le champ est valide'
       lastNameError.style.color = 'lightgreen'
       return false
-    } else
-    if (regex.test(lastName) === false) {
+    } else if (regex.test(lastName) === false) {
       alert("Veuillez entrer un nom valide ")
       lastNameError.textContent = 'Les caractères saisis ne sont pas valides'
       lastNameError.style.removeProperty('color')
@@ -286,17 +285,16 @@ function formValid () {
     }
     return false
   }
-  
+
   function isAdressInvalid() {
     const address = document.getElementById("address").value
-    const addressError = document.getElementById ('addressErrorMsg')
+    const addressError = document.getElementById('addressErrorMsg')
     const regex = /^[a-z0-9éèôöîïûùü' -]{2,50}$/gi
     if (regex.test(address) === true) {
       addressError.textContent = 'Le champ est valide'
       addressError.style.color = 'lightgreen'
       return false
-    } else
-    if (regex.test(address) === false) {
+    } else if (regex.test(address) === false) {
       alert("Veuillez entrer une addresse valide ")
       addressError.textContent = 'Les caractères saisis ne sont pas valides'
       addressError.style.removeProperty('color')
@@ -305,17 +303,16 @@ function formValid () {
     }
     return false
   }
-  
+
   function isCityInvalid() {
     const city = document.getElementById("city").value
-    const cityError = document.getElementById ('cityErrorMsg')
+    const cityError = document.getElementById('cityErrorMsg')
     const regex = /^[a-z0-9éèôöîïûùü' -]{2,50}$/gi
     if (regex.test(city) === true) {
       cityError.textContent = 'Le champ est valide'
       cityError.style.color = 'lightgreen'
       return false
-    } else
-    if (regex.test(city) === false) {
+    } else if (regex.test(city) === false) {
       alert("Veuillez une ville valide ")
       cityError.textContent = 'Les caractères saisis ne sont pas valides'
       cityError.style.removeProperty('color')
@@ -324,17 +321,16 @@ function formValid () {
     }
     return false
   }
-  
+
   function isEmailInvalid() {
     const email = document.getElementById("email").value
     const regex = /^[a-z0-9.-_]+[@]{1}[a-z0-9.-_]+[.]{1}[a-z]{2,10}$/gi
-    const emailError = document.getElementById ('emailErrorMsg')
+    const emailError = document.getElementById('emailErrorMsg')
     if (regex.test(email) === true) {
       emailError.textContent = 'Le champ est valide'
       emailError.style.color = 'lightgreen'
       return false
-    } else
-    if (regex.test(email) === false) {
+    } else if (regex.test(email) === false) {
       alert("Veuillez entrer une adresse mail valide ")
       emailError.textContent = 'Les caractères saisis ne sont pas valides'
       emailError.style.removeProperty('color')
@@ -344,10 +340,9 @@ function formValid () {
     return false
   }
 }
- 
-function formInformation () {
+function formInformation() {
 
-  const form = document.querySelector ('.cart__order__form')
+  const form = document.querySelector('.cart__order__form')
   form.firstName.setAttribute("pattern", "[a-z A-Z-']{2,50}")
   form.firstName.setAttribute("placeholder", "Exemple : Naïm");
   form.lastName.setAttribute("pattern", "[a-z A-Z-']{2,50}")
@@ -359,28 +354,27 @@ function formInformation () {
   form.email.setAttribute("placeholder", "Exemple : kanap@gmail.com ");
 }
 
-
-function makeRequest (){
-const form = document.querySelector ('.cart__order__form')
-const formCart = { 
-  contact: {
-  firstName: form.firstName.value,
-  lastName: form.lastName.value,
-  address: form.address.value,
-  city: form.city.value,
-  email: form.email.value,
-  }, 
-  products: pushIdForPost ()
+function makeRequest() {
+  const form = document.querySelector('.cart__order__form')
+  const formCart = {
+    contact: {
+      firstName: form.firstName.value,
+      lastName: form.lastName.value,
+      address: form.address.value,
+      city: form.city.value,
+      email: form.email.value,
+    },
+    products: pushIdForPost()
   }
   return formCart
 }
 
-function pushIdForPost () {
+function pushIdForPost() {
   let products = []
   for (let product of productInCart) {
     products.push(product.id)
   }
-  return products 
+  return products
 }
 
-formInformation () 
+formInformation() 
