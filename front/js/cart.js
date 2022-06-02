@@ -15,48 +15,48 @@ function productOrder () {
     
   }else {
 
-productInCart.forEach((product) => {
+    productInCart.forEach((product) => {
 
-fetch (`http://localhost:3000/api/products/${product.id}`)
-      .then (res => res.json())
-      .then (data => allData(data))
-      .catch (err => console.log("An error has occurred", err))
+      fetch (`http://localhost:3000/api/products/${product.id}`)
+            .then (res => res.json())
+            .then (data => allData(data))
+            .catch (err => console.log("An error has occurred", err))
 
-  let productCartId = product.id 
-  let productCartColor = product.color 
-  let productCartQuantity = product.quantity; 
-  let productArticle = document.createElement("article")
-  let imgContainer = document.createElement ('div')
-  let infoContainer = document.createElement ('div')
-  let descriptionContainer = document.createElement ('div')
-  let productName = document.createElement ('h2')
-  let productColor = document.createElement ('p')
-  let productCart = document.createElement('p')
-  let settingsContainer = document.createElement ('div')
-  let quantityContainer = document.createElement ('div')
-  let productQuantity = document.createElement ('p')
-  let productInput = document.createElement ('input')
-  let deleteContainer = document.createElement ('div')
-  let productDelete = document.createElement ('p')
-  
-    function allData(data){
-      createArticle()
-      createImgContainer()
-      productInCartImg()
-      createInfoContainer()
-      createDescriptionContainer ()
-      productCartName ()
-      productInCartColor ()
-      productInCartPrice ()
-      createSettingsContainer ()
-      createQuantityContainer ()
-      productSettingsQuantity ()
-      productSettingsInput ()
-      createDeleteContainer ()
-      productSettingsDelete ()
-      changeQuantityProduct ()
-      changeCartPrice ()
-      
+      let productCartId = product.id 
+      let productCartColor = product.color 
+      let productCartQuantity = product.quantity; 
+      let productArticle = document.createElement("article")
+      let imgContainer = document.createElement ('div')
+      let infoContainer = document.createElement ('div')
+      let descriptionContainer = document.createElement ('div')
+      let productName = document.createElement ('h2')
+      let productColor = document.createElement ('p')
+      let productCart = document.createElement('p')
+      let settingsContainer = document.createElement ('div')
+      let quantityContainer = document.createElement ('div')
+      let productQuantity = document.createElement ('p')
+      let productInput = document.createElement ('input')
+      let deleteContainer = document.createElement ('div')
+      let productDelete = document.createElement ('p')
+        
+      function allData(data) {
+        createArticle()
+        createImgContainer()
+        productInCartImg()
+        createInfoContainer()
+        createDescriptionContainer ()
+        productCartName ()
+        productInCartColor ()
+        productInCartPrice ()
+        createSettingsContainer ()
+        createQuantityContainer ()
+        productSettingsQuantity ()
+        productSettingsInput ()
+        createDeleteContainer ()
+        productSettingsDelete ()
+        changeQuantityProduct ()
+        changeCartPrice ()
+          
         function createArticle (){
           productArticle.classList.add("cart__item")
           productArticle.dataset.id = productCartId
@@ -96,7 +96,7 @@ fetch (`http://localhost:3000/api/products/${product.id}`)
           productColor.textContent = productCartColor
           descriptionContainer.appendChild(productColor)
         }
-     
+    
         function productInCartPrice () {
           productCart.textContent = data.price + ' €'
           descriptionContainer.appendChild(productCart)
@@ -149,9 +149,6 @@ fetch (`http://localhost:3000/api/products/${product.id}`)
           localStorage.setItem('productInCart', JSON.stringify(productInCart))
         }
 
-
-        
-
         function createDeleteContainer () {   
           deleteContainer.classList.add('cart__item__content__settings__delete')
           settingsContainer.appendChild(deleteContainer)
@@ -172,10 +169,7 @@ fetch (`http://localhost:3000/api/products/${product.id}`)
           changeCartPrice () 
           deleteArticle ()
           deleteProductInStorage ()
-        
         }
-
-       
       
         function deleteArticle() {
           const articleToDelete = document.querySelector (`article[data-id="${product.id}"][data-color="${product.color}"]`)
@@ -183,12 +177,11 @@ fetch (`http://localhost:3000/api/products/${product.id}`)
           articleToDelete.remove()
         }
 
-        
         function deleteProductInStorage () {
           let newStorage = productInCart
           alert ('Le produit a bien été supprimé')
           localStorage.setItem('productInCart', JSON.stringify(newStorage))
-          if (productInCart.length === 0)
+          if (productInCart.length === 0) {
             localStorage.removeItem('productInCart')
             let header = document.querySelector('h1')
             let cartPriceP = document.querySelector ('.cart__price p')
@@ -197,16 +190,12 @@ fetch (`http://localhost:3000/api/products/${product.id}`)
             header.textContent = 'Votre panier est vide'; 
             cartPriceP.textContent = "Consultez nos articles sur la page d'acceuil"
             cartPriceP.style.textAlign = 'center'; 
-            cartOrder.style.display = 'none'
-
-            
-
-       
-            
-        }  
-    }
-})
-}
+            cartOrder.style.display = 'none'   
+          } 
+        }
+      }
+    })
+  }
 }
 productOrder();
 
@@ -279,7 +268,10 @@ function isNameInvalid() {
   const regex = /^[a-zéèôöîïûùü' -]{2,50}$/gi;
   if (regex.test(name) === false) {
     alert("Veuillez entrer un Nom/Prénom valide ")
-    console.log(name)
+    const lastNameError = document.getElementById ('lastNameErrorMsg')
+    const firstNameError = document.getElementById ('firstNameErrorMsg')
+    lastNameError.textContent = 'Les caractères utilisés ne sont pas valide'
+    firstNameError.textContent = 'Les caractères utilisés ne sont pas valide'
     return true
   }
   return false
@@ -290,8 +282,12 @@ function isLocationInvalid () {
   const city = document.getElementById("city").value
   const regex = /^[a-z0-9éèôöîïûùü' -]{2,50}$/gi
   const addressAndCity = address + city 
-  if (regex.test(addressAndCity) === false) {
+  if (regex.test(addressAndCity || city || address ) === false) {
     alert("Veuillez entrer une adresse/ville valide ")
+    const adressError = document.getElementById ('addressErrorMsg')
+    const cityError = document.getElementById ('cityErrorMsg')
+    adressError.textContent = 'Les caractères utilisés ne sont pas valide'
+    cityError.textContent = 'Les caractères utilisés ne sont pas valide '
     return true
   }
   return false
@@ -302,6 +298,8 @@ function isEmailInvalid() {
   const regex = /^[a-z0-9.-_]+[@]{1}[a-z0-9.-_]+[.]{1}[a-z]{2,10}$/gi
   if (regex.test(email) === false) {
     alert("Veuillez entrer une adresse mail valide ")
+    const emailError = document.getElementById ('emailErrorMsg')
+    emailError.textContent = 'Les caractères saisis ne sont pas valide'
     return true
   }
   return false
