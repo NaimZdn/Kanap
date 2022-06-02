@@ -1,21 +1,24 @@
-const orderId = getOrder ()
-displayOrder (orderId)
-removeCart ()
+const orderId = getOrder()
+displayOrder(orderId)
+removeCart()
 
-function getOrder () {
+// On récupère l'order ID sur l'URL 
+function getOrder() {
     const windowUrl = window.location.search
     const orderUrl = new URLSearchParams(windowUrl)
     return orderUrl.get("orderId")
 }
 
-function displayOrder (orderId) {
+// On affiche l'orderID récupéré 
+function displayOrder(orderId) {
     const getOrderId = document.getElementById('orderId')
     getOrderId.textContent = orderId
 }
 
-/*function removeCart () {
+// On vide le localStorage
+function removeCart () {
     const cart = window.localStorage
     cart.clear()
 
-}*/
+}
 
