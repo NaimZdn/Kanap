@@ -207,17 +207,10 @@ submit.addEventListener('click', (stopRefresh) => submitForm(stopRefresh))
 function submitForm (stopRefresh) {
   stopRefresh.preventDefault()
   
-  if (productInCart.length === 0 ) {
-    const form = document.querySelector(".cart__order__form")
-    form.remove()
-    alert('Veuillez choisir un produit ')
-    return 
-  } 
+function formValid () {
 
-  if (isFormInvalid ()) return 
-  if (isNameInvalid()) return 
-  if (isLocationInvalid()) return 
-  if (isEmailInvalid()) return 
+  if( isFormInvalid () ||  isFirstNameInvalid() || isLastNameInvalid() || isAdressInvalid() ||
+  isCityInvalid() || isAdressInvalid() || isEmailInvalid() === true) return 
 
   const formCart = makeRequest()
   fetch ("http://localhost:3000/api/products/order", {
@@ -234,7 +227,124 @@ function submitForm (stopRefresh) {
   })
   .catch (err => console.log("An error has occurred", err))
 }
+  console.log('cc ')
+  
+  isFormInvalid ()
+  isFirstNameInvalid()
+  isLastNameInvalid()
+  isAdressInvalid()
+  isCityInvalid()
+  isAdressInvalid()
+  isEmailInvalid()
 
+  function isFormInvalid() {
+    const form = document.querySelector(".cart__order__form")
+    const inputs = form.querySelectorAll("input")
+    inputs.forEach((input) => {
+      if (input.value === "") {
+        alert("Veuillez remplir tous les champs à votre disposition")
+        return true
+      }
+      return false
+    })
+  }
+  
+  function isFirstNameInvalid() {
+    const firstName = document.getElementById("firstName").value
+    const firstNameError = document.getElementById ('firstNameErrorMsg')
+    const regex = /^[a-zéèôöîïûùü' -]{2,50}$/gi;
+    if (regex.test(firstName) === true) {
+      firstNameError.textContent = 'Le champ est valide'
+      firstNameError.style.color = 'lightgreen'
+      return false
+    } else
+    if (regex.test(firstName) === false) {
+      alert("Veuillez entrer un prénom valide ")
+      firstNameError.textContent = 'Les caractères saisis ne sont pas valides'
+      firstNameError.style.removeProperty('color')
+      firstNameError.style.color = 'lightred'
+      return true
+    }
+    return false
+  }
+  
+  function isLastNameInvalid() {
+    const lastName = document.getElementById("lastName").value
+    const lastNameError = document.getElementById ('lastNameErrorMsg')
+    const regex = /^[a-zéèôöîïûùü' -]{2,50}$/gi;
+    if (regex.test(lastName) === true) {
+      lastNameError.textContent = 'Le champ est valide'
+      lastNameError.style.color = 'lightgreen'
+      return false
+    } else
+    if (regex.test(lastName) === false) {
+      alert("Veuillez entrer un nom valide ")
+      lastNameError.textContent = 'Les caractères saisis ne sont pas valides'
+      lastNameError.style.removeProperty('color')
+      lastNameError.style.color = 'lightred'
+      return true
+    }
+    return false
+  }
+  
+  function isAdressInvalid() {
+    const address = document.getElementById("address").value
+    const addressError = document.getElementById ('addressErrorMsg')
+    const regex = /^[a-z0-9éèôöîïûùü' -]{2,50}$/gi
+    if (regex.test(address) === true) {
+      addressError.textContent = 'Le champ est valide'
+      addressError.style.color = 'lightgreen'
+      return false
+    } else
+    if (regex.test(address) === false) {
+      alert("Veuillez entrer une addresse valide ")
+      addressError.textContent = 'Les caractères saisis ne sont pas valides'
+      addressError.style.removeProperty('color')
+      addressError.style.color = 'lightred'
+      return true
+    }
+    return false
+  }
+  
+  function isCityInvalid() {
+    const city = document.getElementById("city").value
+    const cityError = document.getElementById ('cityErrorMsg')
+    const regex = /^[a-z0-9éèôöîïûùü' -]{2,50}$/gi
+    if (regex.test(city) === true) {
+      cityError.textContent = 'Le champ est valide'
+      cityError.style.color = 'lightgreen'
+      return false
+    } else
+    if (regex.test(city) === false) {
+      alert("Veuillez une ville valide ")
+      cityError.textContent = 'Les caractères saisis ne sont pas valides'
+      cityError.style.removeProperty('color')
+      cityError.style.color = 'lightred'
+      return true
+    }
+    return false
+  }
+  
+  function isEmailInvalid() {
+    const email = document.getElementById("email").value
+    const regex = /^[a-z0-9.-_]+[@]{1}[a-z0-9.-_]+[.]{1}[a-z]{2,10}$/gi
+    const emailError = document.getElementById ('emailErrorMsg')
+    if (regex.test(email) === true) {
+      emailError.textContent = 'Le champ est valide'
+      emailError.style.color = 'lightgreen'
+      return false
+    } else
+    if (regex.test(email) === false) {
+      alert("Veuillez entrer une adresse mail valide ")
+      emailError.textContent = 'Les caractères saisis ne sont pas valides'
+      emailError.style.removeProperty('color')
+      emailError.style.color = 'lightred'
+      return true
+    }
+    return false
+  }
+}
+ 
 function formInformation () {
 
   const form = document.querySelector ('.cart__order__form')
@@ -249,61 +359,6 @@ function formInformation () {
   form.email.setAttribute("placeholder", "Exemple : kanap@gmail.com ");
 }
 
-function isFormInvalid() {
-  const form = document.querySelector(".cart__order__form")
-  const inputs = form.querySelectorAll("input")
-  inputs.forEach((input) => {
-    if (input.value === "") {
-      alert("Veuillez remplir tous les champs à votre disposition")
-      return true
-    }
-    return false
-  })
-}
-
-function isNameInvalid() {
-  const lastName = document.getElementById("lastName").value
-  const firstName = document.getElementById("firstName").value
-  const name = firstName + lastName
-  const regex = /^[a-zéèôöîïûùü' -]{2,50}$/gi;
-  if (regex.test(name) === false) {
-    alert("Veuillez entrer un Nom/Prénom valide ")
-    const lastNameError = document.getElementById ('lastNameErrorMsg')
-    const firstNameError = document.getElementById ('firstNameErrorMsg')
-    lastNameError.textContent = 'Les caractères utilisés ne sont pas valide'
-    firstNameError.textContent = 'Les caractères utilisés ne sont pas valide'
-    return true
-  }
-  return false
-}
-
-function isLocationInvalid () {
-  const address = document.getElementById("address").value
-  const city = document.getElementById("city").value
-  const regex = /^[a-z0-9éèôöîïûùü' -]{2,50}$/gi
-  const addressAndCity = address + city 
-  if (regex.test(addressAndCity || city || address ) === false) {
-    alert("Veuillez entrer une adresse/ville valide ")
-    const adressError = document.getElementById ('addressErrorMsg')
-    const cityError = document.getElementById ('cityErrorMsg')
-    adressError.textContent = 'Les caractères utilisés ne sont pas valide'
-    cityError.textContent = 'Les caractères utilisés ne sont pas valide '
-    return true
-  }
-  return false
-}
-
-function isEmailInvalid() {
-  const email = document.getElementById("email").value
-  const regex = /^[a-z0-9.-_]+[@]{1}[a-z0-9.-_]+[.]{1}[a-z]{2,10}$/gi
-  if (regex.test(email) === false) {
-    alert("Veuillez entrer une adresse mail valide ")
-    const emailError = document.getElementById ('emailErrorMsg')
-    emailError.textContent = 'Les caractères saisis ne sont pas valide'
-    return true
-  }
-  return false
-}
 
 function makeRequest (){
 const form = document.querySelector ('.cart__order__form')
@@ -329,6 +384,3 @@ function pushIdForPost () {
 }
 
 formInformation () 
-  
-
-

@@ -63,7 +63,6 @@ function currentProductColor(colors){
 
 // Gestion du LocalStorage 
 
-
 // Création d'une fonction qui va nous permettre de gérer l'intégralité du localStorage
 function addToCartProduct (){
     const buttonAdd = document.getElementById ("addToCart")
