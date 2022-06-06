@@ -2,7 +2,6 @@
 let productInCart = JSON.parse(localStorage.getItem("productInCart"))
 const cartList = document.getElementById("cart__items")
 
-
 function productOrder() {
 
   // Si le localStorage est vide alors on prévient l'utilisateur + on efface le formulaire 
@@ -220,7 +219,6 @@ submit.addEventListener('click', (stopRefresh) => submitForm(stopRefresh))
 function submitForm(stopRefresh) {
   stopRefresh.preventDefault()
 
-
   formValid()
   isFormInvalid()
   isFirstNameInvalid()
@@ -232,7 +230,7 @@ function submitForm(stopRefresh) {
   
   function formValid() {
 
-    // Si les formulaires sont invalide alors on envoie pas le formulaire à l'API
+    // Si les formulaires sont invalides alors on envoie pas le formulaire à l'API
     if (isFormInvalid() || isFirstNameInvalid() || isLastNameInvalid() || isAdressInvalid() || isCityInvalid() || isAdressInvalid() || isEmailInvalid() === true) return
     const formCart = makeRequest()
     fetch("http://localhost:3000/api/products/order", {
