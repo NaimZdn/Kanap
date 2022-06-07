@@ -67,5 +67,3 @@ function productDescription(description) {
   p.classList.add("productDescription")
   return p
 }
-
-

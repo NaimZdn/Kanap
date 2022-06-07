@@ -21,4 +21,3 @@ function removeCart () {
     cart.clear()
 
 }
-

@@ -172,8 +172,7 @@ function productOrder() {
         // Fonction qui permet de supprimer du localStorage le produit sur lequel l'utilisateur a cliqué 
         function deleteProductInCart() {
           const productToDelete = productInCart.findIndex((product) => product.id === data._id && product.color === data.color)
-          productInCart.splice(productToDelete, 1)
-          console.log(productInCart)
+          productInCart.splice(productToDelete, 1)      
           changeQuantityProduct()
           changeCartPrice()
           deleteArticle()
@@ -183,7 +182,6 @@ function productOrder() {
         // Supprime le produit de la page
         function deleteArticle() {
           const articleToDelete = document.querySelector(`article[data-id="${product.id}"][data-color="${product.color}"]`)
-          console.log(articleToDelete)
           articleToDelete.remove()
         }
 
