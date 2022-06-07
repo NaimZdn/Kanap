@@ -10,7 +10,7 @@ function productOrder() {
     let cartPriceP = document.querySelector('.cart__price p')
     let cartOrder = document.querySelector('.cart__order')
       header.textContent = 'Votre panier est vide';
-      cartPriceP.textContent = "Consultez nos articles sur la page d'acceuil"
+      cartPriceP.textContent = "Consultez nos articles sur la page d'accueil"
       cartPriceP.style.textAlign = 'center';
       cartOrder.style.display = 'none'
     
@@ -196,7 +196,7 @@ function productOrder() {
             let cartPriceP = document.querySelector('.cart__price p')
             let cartOrder = document.querySelector('.cart__order')
               header.textContent = 'Votre panier est vide';
-              cartPriceP.textContent = "Consultez nos articles sur la page d'acceuil"
+              cartPriceP.textContent = "Consultez nos articles sur la page d'accueil"
               cartPriceP.style.textAlign = 'center';
               cartOrder.style.display = 'none'
           }

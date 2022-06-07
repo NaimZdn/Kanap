@@ -124,4 +124,4 @@ function orderValidIf(colorProduct, quantityProduct) {
     }
 }
 
-addToCartProduct();12
+addToCartProduct();
